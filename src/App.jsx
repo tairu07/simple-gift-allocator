@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
 import { Separator } from '@/components/ui/separator.jsx'
-import { Copy, Calculator, Gift, Target, Zap } from 'lucide-react'
+import { Copy, Calculator, Target, Zap, BarChart3, Diamond, TrendingUp } from 'lucide-react'
 import { parseGiftCodeText, formatAmount, maskGiftCode } from './lib/parser.js'
 import { batchAllocate } from './lib/batch-allocator.js'
 import { BatchAllocationResult } from './components/BatchAllocationResult.jsx'
@@ -79,31 +79,47 @@ function App() {
   const theoreticalMax = totalParsedAmount > 0 ? Math.floor(totalParsedAmount / targetAmount) : 0
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-4">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* ヘッダー */}
+        {/* プロフェッショナルヘッダー */}
         <div className="text-center py-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Gift className="h-8 w-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-gray-900">
-              Appleギフトコード最適配分ツール
+            <div className="p-3 bg-gradient-to-br from-blue-600 to-slate-600 rounded-xl shadow-lg">
+              <Diamond className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+              ギフトコード配分マスター
             </h1>
           </div>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            ギフトコードを貼り付けて、指定した金額以上のセットを在庫が続く限り自動で作成します
+          <p className="text-lg text-slate-300 max-w-3xl mx-auto">
+            高精度アルゴリズムによる最適配分システム - プロフェッショナルな効率性を実現
           </p>
+          <div className="flex items-center justify-center gap-6 mt-4 text-sm text-slate-400">
+            <div className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" />
+              <span>動的計画法</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              <span>最適化エンジン</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4" />
+              <span>高速処理</span>
+            </div>
+          </div>
         </div>
 
         {/* 入力・設定セクション */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
+          <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Copy className="h-5 w-5" />
-                ギフトコード入力
+              <CardTitle className="flex items-center gap-2 text-white">
+                <Copy className="h-5 w-5 text-blue-400" />
+                データ入力
               </CardTitle>
-              <CardDescription>
-                ギフトコードと金額をテキストで貼り付けてください
+              <CardDescription className="text-slate-400">
+                ギフトコードと金額をテキストで入力してください
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -111,19 +127,21 @@ function App() {
                 placeholder="例:&#10;X9D5YZT5787Y57PG ¥50,000&#10;XAB123CD456EF789 ¥30,000&#10;..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                className="min-h-[200px] font-mono text-sm"
+                className="min-h-[200px] font-mono text-sm bg-slate-900/50 border-slate-600 text-white placeholder-slate-500"
               />
               <div className="flex gap-2">
                 <Button 
                   onClick={handleParseText}
                   disabled={!inputText.trim() || isProcessing}
-                  className="flex-1"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
                 >
+                  <Calculator className="h-4 w-4 mr-2" />
                   解析実行
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={handleClear}
+                  className="border-slate-600 text-slate-300 hover:bg-slate-700"
                 >
                   クリア
                 </Button>
@@ -131,36 +149,40 @@ function App() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5" />
-                目標金額設定
+              <CardTitle className="flex items-center gap-2 text-white">
+                <Target className="h-5 w-5 text-emerald-400" />
+                配分設定
               </CardTitle>
-              <CardDescription>
-                各セットの最低金額を設定してください
+              <CardDescription className="text-slate-400">
+                各セットの目標金額を設定してください
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">¥</span>
+                <span className="text-sm font-medium text-slate-300">¥</span>
                 <Input
                   type="number"
                   value={targetAmount}
                   onChange={(e) => setTargetAmount(Number(e.target.value))}
-                  className="text-lg font-semibold"
+                  className="text-lg font-semibold bg-slate-900/50 border-slate-600 text-white"
                 />
               </div>
               
               {parsedCodes.length > 0 && (
-                <div className="p-3 bg-blue-50 rounded-lg space-y-2">
+                <div className="p-4 bg-slate-900/50 rounded-lg border border-slate-600 space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span>在庫総額:</span>
-                    <span className="font-semibold">{formatAmount(totalParsedAmount)}</span>
+                    <span className="text-slate-400">在庫総額:</span>
+                    <span className="font-semibold text-emerald-400">{formatAmount(totalParsedAmount)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>理論上限:</span>
-                    <span className="font-semibold">{theoreticalMax}セット</span>
+                    <span className="text-slate-400">理論上限:</span>
+                    <span className="font-semibold text-blue-400">{theoreticalMax}セット</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-400">効率予測:</span>
+                    <span className="font-semibold text-amber-400">最適化実行中...</span>
                   </div>
                 </div>
               )}
@@ -168,11 +190,11 @@ function App() {
               <Button 
                 onClick={handleBatchAllocation}
                 disabled={parsedCodes.length === 0 || isProcessing}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white"
                 size="lg"
               >
                 <Zap className="h-4 w-4 mr-2" />
-                一括配分を実行
+                最適配分を実行
               </Button>
             </CardContent>
           </Card>
@@ -180,26 +202,26 @@ function App() {
 
         {/* 解析結果表示 */}
         {parsedCodes.length > 0 && !batchResult && (
-          <Card>
+          <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle>解析結果</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-white">解析結果</CardTitle>
+              <CardDescription className="text-slate-400">
                 {parsedCodes.length}件のギフトコードを認識しました
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                  <span className="font-medium">合計金額</span>
-                  <span className="text-lg font-bold text-blue-600">
+                <div className="flex justify-between items-center p-3 bg-gradient-to-r from-blue-900/50 to-slate-900/50 rounded-lg border border-slate-600">
+                  <span className="font-medium text-slate-300">合計金額</span>
+                  <span className="text-lg font-bold text-emerald-400">
                     {formatAmount(totalParsedAmount)}
                   </span>
                 </div>
                 <div className="max-h-40 overflow-y-auto space-y-1">
                   {parsedCodes.map((code, index) => (
-                    <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded text-sm">
-                      <span className="font-mono">{maskGiftCode(code.code)}</span>
-                      <span className="font-semibold">{formatAmount(code.amount)}</span>
+                    <div key={index} className="flex justify-between items-center p-2 bg-slate-900/30 rounded text-sm border border-slate-700">
+                      <span className="font-mono text-slate-400">{maskGiftCode(code.code)}</span>
+                      <span className="font-semibold text-white">{formatAmount(code.amount)}</span>
                     </div>
                   ))}
                 </div>
@@ -218,9 +240,16 @@ function App() {
           />
         )}
 
-        {/* フッター */}
-        <div className="text-center py-6 text-gray-500 text-sm">
-          <p>動的計画法による最適解アルゴリズムで在庫全体を効率的に配分します</p>
+        {/* プロフェッショナルフッター */}
+        <div className="text-center py-6 text-slate-400 text-sm border-t border-slate-700">
+          <p className="mb-2">高精度動的計画法アルゴリズム搭載 - エンタープライズグレードの最適化エンジン</p>
+          <div className="flex items-center justify-center gap-4 text-xs">
+            <span>© 2025 ギフトコード配分マスター</span>
+            <span>•</span>
+            <span>Professional Edition</span>
+            <span>•</span>
+            <span>Powered by Advanced AI</span>
+          </div>
         </div>
       </div>
     </div>
